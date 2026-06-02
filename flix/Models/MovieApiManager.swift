@@ -10,7 +10,7 @@ import Foundation
 class MovieApiManager {
 
   static let baseUrl = "https://api.themoviedb.org/3/movie/"
-  static let apiKey = "FOURSQUARE_CLIENT_SECRET_PLACEHOLDER"
+  static let apiKey = ProcessInfo.processInfo.environment["TMDB_API_KEY"] ?? ""
   var session: URLSession
 
   init() {
@@ -18,7 +18,8 @@ class MovieApiManager {
   }
 
   func nowPlayingMovies(completion: @escaping ([Movie]?, Error?) -> ()) {
-    guard let url = URL(string: MovieApiManager.baseUrl + "now_playing?api_key=\(MovieApiManager.apiKey)") else {
+    guard !MovieApiManager.apiKey.isEmpty,
+          let url = URL(string: MovieApiManager.baseUrl + "now_playing?api_key=\(MovieApiManager.apiKey)") else {
       completion(nil, nil)
       return
     }

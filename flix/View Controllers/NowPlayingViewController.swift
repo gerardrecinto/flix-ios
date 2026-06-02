@@ -37,7 +37,8 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource, UITable
   }
 
   func fetchMovies(){
-    guard let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=FOURSQUARE_CLIENT_SECRET_PLACEHOLDER") else { return }
+    guard !MovieApiManager.apiKey.isEmpty,
+          let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(MovieApiManager.apiKey)") else { return }
     let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
     let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
     let task = session.dataTask(with: request) { [weak self] (data, response, error) in
